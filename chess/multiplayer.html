@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Chess/Multiplayer</title>
+    <link rel="shortcut icon" type="image" href="static/images/knight-icon.png">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/board.css">
+    <link rel="stylesheet" href="css/pieces.css">
+</head>
+
+<body>
+    <div class="local_container">
+        <div class="local_container_box">
+            <button onclick="location.href='index.html'" class="home_button">Chess</button>
+        </div>
+
+        <div class="chess_board_container">
+            <div class="border_board"><h3>8</h3></div>
+            <div class="chess_board">
+                <div name="row_8" class="square even"></div>
+                <div name="row_8" class="square even"></div>
+                <div name="row_8" class="square even"></div>
+                <div name="row_8" class="square even"></div>
+                <div name="row_8" class="square even"></div>
+                <div name="row_8" class="square even"></div>
+                <div name="row_8" class="square even"></div>
+                <div name="row_8" class="square even"></div>
+
+                <div name="row_7" class="square odd"></div>
+                <div name="row_7" class="square odd"></div>
+                <div name="row_7" class="square odd"></div>
+                <div name="row_7" class="square odd"></div>
+                <div name="row_7" class="square odd"></div>
+                <div name="row_7" class="square odd"></div>
+                <div name="row_7" class="square odd"></div>
+                <div name="row_7" class="square odd"></div>
+
+                <div name="row_6" class="square even"></div>
+                <div name="row_6" class="square even"></div>
+                <div name="row_6" class="square even"></div>
+                <div name="row_6" class="square even"></div>
+                <div name="row_6" class="square even"></div>
+                <div name="row_6" class="square even"></div>
+                <div name="row_6" class="square even"></div>
+                <div name="row_6" class="square even"></div>
+
+                <div name="row_5" class="square odd"></div>
+                <div name="row_5" class="square odd"></div>
+                <div name="row_5" class="square odd"></div>
+                <div name="row_5" class="square odd"></div>
+                <div name="row_5" class="square odd"></div>
+                <div name="row_5" class="square odd"></div>
+                <div name="row_5" class="square odd"></div>
+                <div name="row_5" class="square odd"></div>
+
+                <div name="row_4" class="square even"></div>
+                <div name="row_4" class="square even"></div>
+                <div name="row_4" class="square even"></div>
+                <div name="row_4" class="square even"></div>
+                <div name="row_4" class="square even"></div>
+                <div name="row_4" class="square even"></div>
+                <div name="row_4" class="square even"></div>
+                <div name="row_4" class="square even"></div>
+
+                <div name="row_3" class="square odd"></div>
+                <div name="row_3" class="square odd"></div>
+                <div name="row_3" class="square odd"></div>
+                <div name="row_3" class="square odd"></div>
+                <div name="row_3" class="square odd"></div>
+                <div name="row_3" class="square odd"></div>
+                <div name="row_3" class="square odd"></div>
+                <div name="row_3" class="square odd"></div>
+
+                <div name="row_2" class="square even"></div>
+                <div name="row_2" class="square even"></div>
+                <div name="row_2" class="square even"></div>
+                <div name="row_2" class="square even"></div>
+                <div name="row_2" class="square even"></div>
+                <div name="row_2" class="square even"></div>
+                <div name="row_2" class="square even"></div>
+                <div name="row_2" class="square even"></div>
+
+                <div name="row_1" class="square odd"></div>
+                <div name="row_1" class="square odd"></div>
+                <div name="row_1" class="square odd"></div>
+                <div name="row_1" class="square odd"></div>
+                <div name="row_1" class="square odd"></div>
+                <div name="row_1" class="square odd"></div>
+                <div name="row_1" class="square odd"></div>
+                <div name="row_1" class="square odd"></div>
+            </div>
+            
+            <div class="border_board"><h3>7</h3></div>
+            <div class="border_board"><h3>6</h3></div>
+            <div class="border_board"><h3>5</h3></div>
+            <div class="border_board"><h3>4</h3></div>
+            <div class="border_board"><h3>3</h3></div>
+            <div class="border_board"><h3>2</h3></div>
+            <div class="border_board"><h3>1</h3></div>
+
+            <div class="border_board"></div>
+
+            <div class="border_board"><h3>a</h3></div>
+            <div class="border_board"><h3>b</h3></div>
+            <div class="border_board"><h3>c</h3></div>
+            <div class="border_board"><h3>d</h3></div>
+            <div class="border_board"><h3>e</h3></div>
+            <div class="border_board"><h3>f</h3></div>
+            <div class="border_board"><h3>g</h3></div>
+            <div class="border_board"><h3>h</h3></div>
+            
+            <script type="module" src="js/local&multiplayer/multiplayerGame.js"></script>
+        </div>
+
+        <div id="piece_over_others"></div>
+
+        <div class="local_container_box">
+            <div class="profile_container">
+                <div id="profile_picture_white"></div>
+                <div id="profile_name_white">white player</div>
+                <div id="timer_white_container"><span id="timer_white"></span></div>
+                <div>
+                    <div id="eated_black_queens"></div>
+                    <div id="eated_black_rooks"></div>
+                    <div id="eated_black_bishops"></div>
+                    <div id="eated_black_knights"></div>
+                    <div id="eated_black_pawns"></div>
+                </div>
+            </div>
+            
+            <div class="profile_container">
+                <div id="profile_picture_black"></div>
+                <div id="profile_name_black">black player</div>
+                <div id="timer_black_container"><span id="timer_black"></span></div>
+                <div>
+                    <div id="eated_white_queens"></div>
+                    <div id="eated_white_rooks"></div>
+                    <div id="eated_white_bishops"></div>
+                    <div id="eated_white_knights"></div>
+                    <div id="eated_white_pawns"></div>
+                </div>
+            </div>
+            <script src="js/local&multiplayer/profile/name&image.js"></script>
+
+            <div id="play_history" class="play_history_container"></div>
+            <script type="module" src="js/local&multiplayer/play_history.js"></script>
+
+            <button id="restart_game" class="restart_test">test</button>
+        </div>
+    </div>
+</body>
+</html>

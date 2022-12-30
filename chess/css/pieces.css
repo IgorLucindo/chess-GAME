@@ -1,0 +1,173 @@
+.rook_white{
+    width: 75px;
+    height: 75px;
+    border: 0;
+    position: absolute;
+    cursor: grab;
+    background-image: url(../static/images/pieces/rook_white.png);
+    background-repeat: no-repeat;
+    background-size: 70%;
+    background-position: center;
+    background-color: transparent;
+    transition: transform .15s linear;
+}
+
+.knight_white{
+    width: 75px;
+    height: 75px;
+    border: 0;
+    position: absolute;
+    cursor: grab;
+    background-image: url(../static/images/pieces/knight_white.png);
+    background-repeat: no-repeat;
+    background-size: 80%;
+    background-position: center;
+    background-color: transparent;
+    transition: transform .15s linear;
+}
+
+.bishop_white{
+    width: 75px;
+    height: 75px;
+    border: 0;
+    position: absolute;
+    cursor: grab;
+    background-image: url(../static/images/pieces/bishop_white.png);
+    background-repeat: no-repeat;
+    background-size: 76%;
+    background-position: center;
+    background-color: transparent;
+    transition: transform .15s linear;
+}
+
+.king_white{
+    width: 75px;
+    height: 75px;
+    border: 0;
+    position: absolute;
+    cursor: grab;
+    background-image: url(../static/images/pieces/king_white.png);
+    background-repeat: no-repeat;
+    background-size: 85%;
+    background-position: center;
+    background-color: transparent;
+    transition: transform .15s linear;
+}
+
+.queen_white{
+    width: 75px;
+    height: 75px;
+    border: 0;
+    position: absolute;
+    cursor: grab;
+    background-image: url(../static/images/pieces/queen_white.png);
+    background-repeat: no-repeat;
+    background-size: 90%;
+    background-position: center;
+    background-color: transparent;
+    transition: transform .15s linear;
+}
+
+.pawn_white{
+    width: 75px;
+    height: 75px;
+    border: 0;
+    position: absolute;
+    cursor: grab;
+    background-image: url(../static/images/pieces/pawn_white.png);
+    background-repeat: no-repeat;
+    background-size: 55%;
+    background-position: center;
+    background-color: transparent;
+    transition: transform .15s linear;
+}
+
+.rook_black{
+    width: 75px;
+    height: 75px;
+    border: 0;
+    position: absolute;
+    cursor: grab;
+    background-image: url(../static/images/pieces/rook_black.png);
+    background-repeat: no-repeat;
+    background-size: 70%;
+    background-position: center;
+    background-color: transparent;
+    transition: transform .15s linear;
+}
+
+.knight_black{
+    width: 75px;
+    height: 75px;
+    border: 0;
+    position: absolute;
+    cursor: grab;
+    background-image: url(../static/images/pieces/knight_black.png);
+    background-repeat: no-repeat;
+    background-size: 80%;
+    background-position: center;
+    background-color: transparent;
+    transition: transform .15s linear;
+}
+
+.bishop_black{
+    width: 75px;
+    height: 75px;
+    border: 0;
+    position: absolute;
+    cursor: grab;
+    background-image: url(../static/images/pieces/bishop_black.png);
+    background-repeat: no-repeat;
+    background-size: 76%;
+    background-position: center;
+    background-color: transparent;
+    transition: transform .15s linear;
+}
+
+.king_black{
+    width: 75px;
+    height: 75px;
+    border: 0;
+    position: absolute;
+    cursor: grab;
+    background-image: url(../static/images/pieces/king_black.png);
+    background-repeat: no-repeat;
+    background-size: 85%;
+    background-position: center;
+    background-color: transparent;
+    transition: transform .15s linear;
+}
+
+.queen_black{
+    width: 75px;
+    height: 75px;
+    border: 0;
+    position: absolute;
+    cursor: grab;
+    background-image: url(../static/images/pieces/queen_black.png);
+    background-repeat: no-repeat;
+    background-size: 90%;
+    background-position: center;
+    background-color: transparent;
+    transition: transform .15s linear;
+}
+
+.pawn_black{
+    width: 75px;
+    height: 75px;
+    border: 0;
+    position: absolute;
+    cursor: grab;
+    background-image: url(../static/images/pieces/pawn_black.png);
+    background-repeat: no-repeat;
+    background-size: 55%;
+    background-position: center;
+    background-color: transparent;
+    transition: transform .15s linear;
+}
+
+.eated_piece{
+    width: 21px;
+    height: 21px;
+    cursor: default;
+}
