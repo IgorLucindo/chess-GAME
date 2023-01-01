@@ -23,6 +23,10 @@ export const set_code_db = function(code){
         white_play: "last_white_play",
         black_play: "last_black_play"
     });
+    set(ref(db, "Server/" + code + "/time/"), {
+        white_time: "last_time_white_ds",
+        black_time: "last_time_black_ds"
+    });
     // receive ghest entry
     onChildAdded(ref(db, "Server/" + code), (data) =>{
         if(data.key == "ghest"){window.location.assign("/multiplayer.html");}
@@ -79,15 +83,50 @@ export const update_player_play_database = function(i, j, pos, piece_color, enPa
 
 
 
-// get opponent play
+// get and make opponent's last play
 export const get_opponent_play_database = function(player_color, replace_piece_function){
     const code = sessionStorage.getItem("code");
     onChildChanged(ref(db, "Server/" + code + "/plays/"), (data) =>{
         if((player_color == "white" && data.key == "black_play") ||
         (player_color == "black" && data.key == "white_play")){
-            // set parameters of the replace_piece_database
+            // set parameters of replace_piece_function
             let prms = data.val();
             replace_piece_function(prms[0], prms[1], [prms[2], prms[3]], prms[4], prms[5]);
+        }
+    });
+};
+
+
+
+// update player remaining time in database
+export const update_player_time_database = function(piece_color, time_white_ds, time_black_ds){
+    const code = sessionStorage.getItem("code");
+    if(piece_color == "w"){
+        update(ref(db, "Server/" + code + "/time/"), {
+            white_time: time_white_ds
+        });
+    }
+    if(piece_color == "b"){
+        update(ref(db, "Server/" + code + "/time/"), {
+            black_time: time_black_ds
+        });
+    }
+};
+
+
+
+// get opponent's remaining time
+export const get_opponent_time_database = function(player_color, set_time_function){
+    const code = sessionStorage.getItem("code");
+    onChildChanged(ref(db, "Server/" + code + "/time/"), (data) =>{
+        if((player_color == "white" && data.key == "black_time") ||
+        (player_color == "black" && data.key == "white_time")){
+            // set parameters of the set_time_function
+            let opponent_time_ds = data.val();
+            let opponent_color = null;
+            if(player_color == "white"){opponent_color = "b";}
+            if(player_color == "black"){opponent_color = "w";}
+            set_time_function(opponent_time_ds, opponent_color);
         }
     });
 };

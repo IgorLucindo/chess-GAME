@@ -18,7 +18,7 @@ var mouseI_temp = 0;
 var mouseJ_temp = 0;
 var turn = {value: 0};
 const piece_over_others_div = document.getElementById("piece_over_others");
-
+var total_time = 300;
 
 
 // on press circle function
@@ -33,7 +33,7 @@ const pressCircle = (e) =>{
         // move to circle
         if(chess_board[mouseJ][mouseI].getElementsByClassName("circle")[0] != null ||
            chess_board[mouseJ][mouseI].getElementsByClassName("circle_target")[0] != null){
-            replace_piece(mouseJ, mouseI, pos, play_history, isDragging, load_piece, turn, flipped);
+            replace_piece(mouseJ, mouseI, pos, play_history, isDragging, load_piece, turn, flipped, total_time);
         }
     }
 };
@@ -43,7 +43,7 @@ const dropPiece = () =>{
     // move to circle
     if((isDragging && chess_board[mouseJ][mouseI].getElementsByClassName("circle")[0] != null) ||
        (isDragging && chess_board[mouseJ][mouseI].getElementsByClassName("circle_target")[0] != null)){
-        replace_piece(mouseJ, mouseI, pos, play_history, isDragging, load_piece, turn, flipped);
+        replace_piece(mouseJ, mouseI, pos, play_history, isDragging, load_piece, turn, flipped, total_time);
         pieceDragged = true;
     }
     chess_board_div.removeEventListener("mouseup", dropPiece);
@@ -196,8 +196,8 @@ const load_piece = function(piece){
 
 // starting game
 spawn_pieces();
-update_attacking_map(turn);
-timer(300, turn);
+update_attacking_map(play_history);
+timer(play_history, turn, load_piece, total_time);
 pieces.forEach((piece) =>{
     load_piece(piece);
 });

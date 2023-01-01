@@ -10,14 +10,15 @@ file_names.onreadystatechange = () =>{
     }
 };
 file_names.send(null);
+
 // getting array of names in profile_names.txt
-var names_array = names_text.split("\r\n");
+var names_array = names_text.split("\n");
 
 // getting array of profile images
 var profile_image_array = ["../static/images/profile images/burro.jfif",
-                     "../static/images/profile images/cebolinha.jfif",
-                     "../static/images/profile images/mike_wazowski.jfif",
-                     "../static/images/profile images/pé_de_pano.jfif"];
+                           "../static/images/profile images/cebolinha.jfif",
+                           "../static/images/profile images/mike_wazowski.jfif",
+                           "../static/images/profile images/pé_de_pano.jfif"];
 
 
 // changing profile name and picture randomly

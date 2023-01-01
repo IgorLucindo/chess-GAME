@@ -7,7 +7,9 @@ export const chess_board_virtual_initial = [["R_b", "N_b", "B_b", "Q_b", "K_b", 
                                             [],
                                             ["P_w", "P_w", "P_w", "P_w", "P_w", "P_w", "P_w", "P_w"],
                                             ["R_w", "N_w", "B_w", "Q_w", "K_w", "B_w", "N_w", "R_w"]];
-                                            
+
+
+
 export var chess_board_virtual = [[],[],[],[],[],[],[],[]];
 for(let i = 0; i < 8; i++){
     for(let j = 0; j < 8; j++){chess_board_virtual[i][j] = chess_board_virtual_initial[i][j];};

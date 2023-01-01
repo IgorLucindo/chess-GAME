@@ -80,7 +80,7 @@ const king_straight_move = function(piece_color, attacked_squares, i_func, j_fun
                 create_one_circle_target(i_func, j_func);
             }
         }
-    };
+    }
 };
 
 // pawn forward movement

@@ -1,10 +1,11 @@
-import {chess_board_virtual_initial, chess_board_virtual, chess_board} from "./chessBoards.js";
+import {chess_board_virtual_initial, chess_board_virtual, chess_board, chess_board_div} from "./chessBoards.js";
 import {update_attacking_map} from "../libraries/chessMaps.js";
 import {number_of_pieces, spawn_pieces} from "./spawnPieces.js";
 import {restart_game_database} from "../../server/firebase_realTimeDatabase/firebase_database_functions.js";
 import {initiate_timer_white, initiate_timer_black, timer} from "../local&multiplayer/profile/timer.js";
 import {clear_eated_pieces_container} from "../local&multiplayer/profile/pieces.js";
 import {clear_play_history_container} from "../local&multiplayer/play_history.js";
+import {isCheckmate} from "../libraries/checkmate.js";
 
 
 
@@ -18,6 +19,7 @@ const rematch = function(play_history, turn, load_piece, total_time, multiplayer
     play_history.length = 0;
     play_history.push(["piece", "from", "to"]);
     turn.value = 0;
+    isCheckmate.value = false;
     if(multiplayer){restart_game_database();}
     for(let i = 0; i < 8; i++){
         for(let j = 0; j < 8; j++){
@@ -30,8 +32,8 @@ const rematch = function(play_history, turn, load_piece, total_time, multiplayer
     clear_play_history_container();
     // start game
     spawn_pieces();
-    update_attacking_map(turn);
-    timer(total_time, turn);
+    update_attacking_map(play_history);
+    timer(play_history, turn, load_piece, total_time);
     let pieces = document.getElementsByName("piece");
     pieces.forEach((piece) =>{
         load_piece(piece);
@@ -44,12 +46,12 @@ const rematch = function(play_history, turn, load_piece, total_time, multiplayer
 export const finish_game = function(play_history, turn, load_piece, total_time, multiplayer = false){
     let finish_game_container = document.createElement("div");
     finish_game_container.classList.add("finish_game_container");
-    finish_game_container.innerHTML = `<button class="rematch_button">rematch</button>`;
-    document.body.appendChild(finish_game_container);
+    finish_game_container.innerHTML = `<div class="finish_game_top">Winner</div><button class="rematch_button">rematch</button>`;
+    chess_board_div.appendChild(finish_game_container);
 
     const rematch_button = finish_game_container.getElementsByClassName("rematch_button")[0];
     rematch_button.addEventListener("click", () =>{
         rematch(play_history, turn, load_piece, total_time, multiplayer);
-        document.body.removeChild(finish_game_container);
+        chess_board_div.removeChild(finish_game_container);
     });
 };

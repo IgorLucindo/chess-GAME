@@ -4,8 +4,8 @@ import {create_circles} from "../libraries/piecesMovementsCircles.js";
 import {update_attacking_map} from "../libraries/chessMaps.js";
 import {get_square_overlayed, clear_all_circles, replace_piece, get_piece_position, replace_piece_database} from "../libraries/chessBoardActions.js";
 import {flipped, flip_board} from "./flipboard_button.js";
-import {timer} from "./profile/timer.js";
-import {finish_game} from "../game/finishGame.js";
+import {set_time, timer} from "./profile/timer.js";
+import {get_opponent_time_database} from "../../server/firebase_realTimeDatabase/firebase_database_functions.js";
 
 var play_history = [["piece", "from", "to"]];
 var pos = null;
@@ -19,6 +19,7 @@ var mouseJ_temp = 0;
 var turn = {value: 0};
 const piece_over_others_div = document.getElementById("piece_over_others");
 const player_color = sessionStorage.getItem("player_color");
+var total_time = 300;
 
 
 
@@ -34,7 +35,7 @@ const pressCircle = (e) =>{
         // move to circle
         if(chess_board[mouseJ][mouseI].getElementsByClassName("circle")[0] != null ||
            chess_board[mouseJ][mouseI].getElementsByClassName("circle_target")[0] != null){
-            replace_piece(mouseJ, mouseI, pos, play_history, isDragging, load_piece, turn, flipped, true);
+            replace_piece(mouseJ, mouseI, pos, play_history, isDragging, load_piece, turn, flipped, total_time, true);
         }
     }
 };
@@ -44,7 +45,7 @@ const dropPiece = () =>{
     // move to circle
     if((isDragging && chess_board[mouseJ][mouseI].getElementsByClassName("circle")[0] != null) ||
        (isDragging && chess_board[mouseJ][mouseI].getElementsByClassName("circle_target")[0] != null)){
-        replace_piece(mouseJ, mouseI, pos, play_history, isDragging, load_piece, turn, flipped, true);
+        replace_piece(mouseJ, mouseI, pos, play_history, isDragging, load_piece, turn, flipped, total_time, true);
         pieceDragged = true;
     }
     chess_board_div.removeEventListener("mouseup", dropPiece);
@@ -197,13 +198,14 @@ const load_piece = function(piece){
 
 // starting game
 spawn_pieces();
-update_attacking_map(turn);
-timer(300, turn);
+update_attacking_map(play_history);
+timer(play_history, turn, load_piece, total_time);
 pieces.forEach((piece) =>{
     load_piece(piece);
 });
 if(player_color == "black"){flip_board();}
-replace_piece_database(play_history, load_piece, turn, flipped, player_color);
+replace_piece_database(play_history, load_piece, turn, flipped, total_time, player_color);
+get_opponent_time_database(player_color, set_time);
 
 
 
@@ -230,12 +232,4 @@ document.addEventListener("mousedown", (e) =>{
         }
     });
     if(counter == pieces.length){clear_all_circles();}
-});
-
-
-
-// restarting game button
-const restart_game_button = document.getElementById("restart_game");
-restart_game_button.addEventListener("click", () =>{
-    finish_game(play_history, turn, load_piece, 300, true);
 });

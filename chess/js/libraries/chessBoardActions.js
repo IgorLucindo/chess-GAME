@@ -3,7 +3,9 @@ import {set_piece_template} from "../game/spawnPieces.js";
 import {checking_pieces, update_attacking_map} from "./chessMaps.js";
 import {update_play_history_container} from "../local&multiplayer/play_history.js";
 import {update_eated_pieces_container} from "../local&multiplayer/profile/pieces.js";
-import {get_opponent_play_database, update_player_play_database} from "../../server/firebase_realTimeDatabase/firebase_database_functions.js";
+import {get_opponent_play_database, update_player_play_database, update_player_time_database} from "../../server/firebase_realTimeDatabase/firebase_database_functions.js";
+import {time_white_ds, time_black_ds} from "../local&multiplayer/profile/timer.js";
+import { verify_checkmate } from "./checkmate.js";
 
 var enPassant = null;
 var castle = null;
@@ -46,7 +48,7 @@ export const get_piece_position = function(piece){
 
 
 // promote pawn
-const promote = function(i, j, load_piece, play_history, turn, flipped, multiplayer = false){
+const promote = function(i, j, piece_color, load_piece, play_history, turn, flipped, total_time, multiplayer = false){
     // create promotion_container
     let promotion_container = document.createElement("div");
     promotion_container.classList.add("promotion_container");
@@ -55,13 +57,13 @@ const promote = function(i, j, load_piece, play_history, turn, flipped, multipla
     if(!flipped){promotion_container.style.left = reference_piece.left + "px";}
     if(flipped){promotion_container.style.left = 75*j + "px";}
 
-    if(chess_board_virtual[i][j][2] == "w"){
+    if(piece_color == "w"){
         promotion_container.innerHTML = `<button class="queen_white" id="Q_w" style="position:static; cursor: pointer;"></button>
                                          <button class="rook_white" id="R_w" style="position:static; cursor: pointer;"></button>
                                          <button class="bishop_white" id="B_w" style="position:static; cursor: pointer;"></button>
                                          <button class="knight_white" id="N_w" style="position:static; cursor: pointer;"></button>`;
     }
-    if(chess_board_virtual[i][j][2] == "b"){
+    if(piece_color == "b"){
         promotion_container.innerHTML = `<button class="knight_black" id="N_b" style="position:static; cursor: pointer;"></button>
                                          <button class="bishop_black" id="B_b" style="position:static; cursor: pointer;"></button>
                                          <button class="rook_black" id="R_b" style="position:static; cursor: pointer;"></button>
@@ -83,16 +85,21 @@ const promote = function(i, j, load_piece, play_history, turn, flipped, multipla
             load_piece(chess_board[i][j].getElementsByTagName("button")[0]);
             // close container
             chess_board_div.removeChild(promotion_container);
-            // update player play in database
-            if(multiplayer){update_player_play_database(i, j, pos, chess_board_virtual[i][j][2], enPassant, castle)}
+            // update player properties in database
+            if(multiplayer){
+                update_player_play_database(i, j, pos, piece_color, enPassant, castle);
+                update_player_time_database(piece_color, time_white_ds, time_black_ds);
+            }
             // update attacking map
-            update_attacking_map(turn);
+            update_attacking_map(play_history);
             // sound effects
             sound_effects();
             // pass turn
             turn.value++;
             // update play history container
             update_play_history_container(play_history, turn);
+            // verify checkmate
+            verify_checkmate(piece_color, play_history, turn, load_piece, total_time);
         });
     };
 };
@@ -173,10 +180,11 @@ const change_position_castle = function(i, j, castle_move, square_overlayed){
 
 
 // replace piece position in board and in virtual board
-export const replace_piece = function(i, j, pos, play_history, isDragging, load_piece, turn, flipped, multiplayer = false){
+export const replace_piece = function(i, j, pos, play_history, isDragging, load_piece, turn, flipped, total_time, multiplayer = false){
     let circle = chess_board[i][j].getElementsByClassName("circle")[0];
     let circle_target = chess_board[i][j].getElementsByClassName("circle_target")[0];
     let square_overlayed = get_square_overlayed(pos);
+    let piece_color = chess_board_virtual[pos[0]][pos[1]][2];
     enPassant = null;
     castle = null;
     capture = false;
@@ -194,28 +202,34 @@ export const replace_piece = function(i, j, pos, play_history, isDragging, load_
     play_history.push([chess_board_virtual[i][j], pos, [i,j]]);
     // check promotion
     if(chess_board_virtual[i][j][0] == "P" && (i == 0 || i == 7)){
-        promote(i, j, load_piece, play_history, turn, flipped, multiplayer);
+        promote(i, j, piece_color, load_piece, play_history, turn, flipped, total_time, multiplayer);
     }
     else{
-        // update player play in database
-        if(multiplayer){update_player_play_database(i, j, pos, chess_board_virtual[i][j][2], enPassant, castle)}
+        // update player properties in database
+        if(multiplayer){
+            update_player_play_database(i, j, pos, piece_color, enPassant, castle);
+            update_player_time_database(piece_color, time_white_ds, time_black_ds);
+        }
         // update attacking map
-        update_attacking_map(turn);
+        update_attacking_map(play_history);
         // sound effects
         sound_effects();
         // pass turn
         turn.value++;
         // update play history container
         update_play_history_container(play_history, turn);
+        // verify checkmate
+        verify_checkmate(piece_color, play_history, turn, load_piece, total_time);
     }
 };
 
 
 
 // replace piece position in board and in virtual board
-export const replace_piece_database = function(play_history, load_piece, turn, flipped, player_color){
+export const replace_piece_database = function(play_history, load_piece, turn, flipped, total_time, player_color){
     get_opponent_play_database(player_color, (i, j, pos, enPassant_move, castle_move) =>{
         let square_overlayed = get_square_overlayed(pos);
+        let piece_color = chess_board_virtual[pos[0]][pos[1]][2];
         enPassant = null;
         castle = null;
         capture = false;
@@ -229,17 +243,19 @@ export const replace_piece_database = function(play_history, load_piece, turn, f
         play_history.push([chess_board_virtual[i][j], pos, [i,j]]);
         // check promotion
         if(chess_board_virtual[i][j][0] == "P" && (i == 0 || i == 7)){
-            promote(i, j, load_piece, play_history, turn, flipped);
+            promote(i, j, piece_color, load_piece, play_history, turn, flipped, total_time);
         }
         else{
             // update attacking map
-            update_attacking_map(turn);
+            update_attacking_map(play_history);
             // sound effects
             sound_effects();
             // pass turn
             turn.value++;
             // update play history container
             update_play_history_container(play_history, turn);
+            // verify checkmate
+            verify_checkmate(piece_color, play_history, turn, load_piece, total_time);
         }
     });
 };
