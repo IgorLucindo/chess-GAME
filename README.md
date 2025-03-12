@@ -1,3 +1,3 @@
-# Play-Chess-App
+# Chess
 Chess application with javascript
 supports multiplayer via firebase database
